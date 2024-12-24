@@ -22,9 +22,9 @@ export function ValueChainCard({ title, description, icon: Icon, index }: ValueC
       role="button"
       tabIndex={0}
     >
-      <div className="chip">{`${index + 1}`}</div>
-      <Icon className="value-chain-icon" />
-      <h3 className="value-chain-title">{title}</h3>
+      <div className="chip bg-[#ea384c] text-white">{`${index + 1}`}</div>
+      <Icon className="value-chain-icon text-[#ea384c]" />
+      <h3 className="value-chain-title text-[#000000]">{title}</h3>
       <div
         className={cn(
           "overflow-hidden transition-all duration-300",
