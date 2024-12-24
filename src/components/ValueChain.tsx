@@ -52,7 +52,7 @@ export function ValueChain() {
           <img 
             src="/lovable-uploads/0c251999-a44a-4777-a2d2-3f4611be3d6d.png" 
             alt="Erciyas Logo" 
-            className="h-24 mb-8"
+            className="h-32 mb-8"
           />
           <h1 className="text-4xl font-bold text-[#000000] mb-2">
             Değer Zinciri
