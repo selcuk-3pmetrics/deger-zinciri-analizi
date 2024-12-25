@@ -7,6 +7,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { DepartmentSection } from "./DepartmentSection";
 
 interface ValueChainCardProps {
   title: string;
@@ -14,6 +15,7 @@ interface ValueChainCardProps {
   icon: LucideIcon;
   index: number;
   policies: string[];
+  uploadedData: any[];
 }
 
 const getStakeholders = (title: string) => {
@@ -72,7 +74,7 @@ const getMaterialityTopics = (title: string) => {
   return materialityMap[title] || [];
 };
 
-export function ValueChainCard({ title, description, icon: Icon, index, policies }: ValueChainCardProps) {
+export function ValueChainCard({ title, description, icon: Icon, index, policies, uploadedData }: ValueChainCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const handleTitleClick = () => {
@@ -80,7 +82,7 @@ export function ValueChainCard({ title, description, icon: Icon, index, policies
   };
 
   const handleAccordionClick = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent accordion clicks from triggering card collapse
+    e.stopPropagation();
   };
 
   return (
@@ -171,6 +173,8 @@ export function ValueChainCard({ title, description, icon: Icon, index, policies
               </AccordionContent>
             </AccordionItem>
           </Accordion>
+
+          <DepartmentSection valueChainStep={title} uploadedData={uploadedData} />
         </div>
       </div>
     </div>

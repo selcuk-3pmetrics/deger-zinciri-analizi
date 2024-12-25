@@ -1,5 +1,7 @@
 import { Box, Factory, Microscope, CheckSquare, Truck, BarChart3, Users, DollarSign } from "lucide-react";
 import { ValueChainCard } from "./ValueChainCard";
+import { ExcelUploader } from "./ExcelUploader";
+import { useState } from "react";
 
 const valueChainSteps = [
   {
@@ -53,6 +55,8 @@ const valueChainSteps = [
 ];
 
 export function ValueChain() {
+  const [uploadedData, setUploadedData] = useState<any[]>([]);
+
   return (
     <div className="min-h-screen bg-white py-12 px-4">
       <div className="max-w-7xl mx-auto">
@@ -69,6 +73,7 @@ export function ValueChain() {
             Kapsamlı Değer Zinciri Analizi
           </p>
         </div>
+        <ExcelUploader onDataUploaded={setUploadedData} />
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           {valueChainSteps.slice(0, 4).map((step, index) => (
             <ValueChainCard
@@ -78,6 +83,7 @@ export function ValueChain() {
               icon={step.icon}
               index={index}
               policies={step.policies}
+              uploadedData={uploadedData}
             />
           ))}
         </div>
@@ -90,6 +96,7 @@ export function ValueChain() {
               icon={step.icon}
               index={index + 4}
               policies={step.policies}
+              uploadedData={uploadedData}
             />
           ))}
         </div>
