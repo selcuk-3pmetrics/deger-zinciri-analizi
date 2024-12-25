@@ -45,8 +45,8 @@ export function ValueChainCard({ title, description, icon: Icon, index, uploaded
 
       <div
         className={cn(
-          "overflow-hidden transition-all duration-300",
-          isExpanded ? "max-h-[800px] opacity-100" : "max-h-0 opacity-0"
+          "overflow-y-auto transition-all duration-300 w-full",
+          isExpanded ? "max-h-[400px] opacity-100" : "max-h-0 opacity-0"
         )}
         onClick={handleAccordionClick}
       >
