@@ -46,7 +46,7 @@ const valueChainSteps = [
 
 export function ValueChain() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-12 px-4">
+    <div className="min-h-screen bg-white py-12 px-4">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col items-center mb-12">
           <img 
