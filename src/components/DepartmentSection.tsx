@@ -19,7 +19,6 @@ interface RiskData {
   severity?: string;
   riskScore?: string;
   financialImpact?: string;
-  date?: string;
 }
 
 const departments = [
@@ -41,10 +40,17 @@ export function DepartmentSection({ valueChainStep, uploadedData }: DepartmentSe
   const getRisksForDepartment = (department: string): RiskData[] => {
     if (!uploadedData || !Array.isArray(uploadedData)) return [];
     
-    return uploadedData.filter(row => 
+    const risks = uploadedData.filter(row => 
       row.department === department && 
       row.valueChainStep === valueChainStep
     );
+
+    // Sort risks by riskScore in descending order
+    return risks.sort((a, b) => {
+      const scoreA = parseFloat(a.riskScore) || 0;
+      const scoreB = parseFloat(b.riskScore) || 0;
+      return scoreB - scoreA;
+    });
   };
 
   return (
@@ -89,11 +95,6 @@ export function DepartmentSection({ valueChainStep, uploadedData }: DepartmentSe
                         {riskData.financialImpact && (
                           <div>
                             <span className="font-medium">Finansal Etki:</span> {riskData.financialImpact}
-                          </div>
-                        )}
-                        {riskData.date && (
-                          <div>
-                            <span className="font-medium">Tarih:</span> {riskData.date}
                           </div>
                         )}
                       </div>
