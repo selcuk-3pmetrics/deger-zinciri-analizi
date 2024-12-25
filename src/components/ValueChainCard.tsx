@@ -77,23 +77,23 @@ export function ValueChainCard({ title, description, icon: Icon, index }: ValueC
   return (
     <div 
       className={cn(
-        "value-chain-card cursor-pointer",
-        isExpanded && "z-10"
+        "relative flex flex-col items-center justify-start p-6 rounded-xl backdrop-blur-sm border border-gray-200/50 shadow-lg transition-all duration-300 ease-in-out cursor-pointer",
+        isExpanded ? "bg-[#ea384c]/10 border-[#ea384c]/30" : "bg-white/80"
       )}
       onClick={() => setIsExpanded(!isExpanded)}
       role="button"
       tabIndex={0}
     >
       <div className="chip bg-[#ea384c] text-white">{`${index + 1}`}</div>
-      <Icon className="value-chain-icon text-[#ea384c]" />
-      <h3 className="value-chain-title text-[#000000]">{title}</h3>
+      <Icon className="w-12 h-12 mb-4 text-[#ea384c]" />
+      <h3 className="text-lg font-semibold text-[#000000] mb-2 text-center">{title}</h3>
       <div
         className={cn(
           "overflow-hidden transition-all duration-300",
           isExpanded ? "max-h-[800px] opacity-100" : "max-h-0 opacity-0"
         )}
       >
-        <p className="value-chain-description animate-fade-in">
+        <p className="text-sm text-gray-600 text-center mt-4 leading-relaxed animate-fade-in">
           {description}
         </p>
         

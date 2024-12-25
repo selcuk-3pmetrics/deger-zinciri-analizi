@@ -48,11 +48,11 @@ export function ValueChain() {
   return (
     <div className="min-h-screen bg-white py-12 px-4">
       <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col items-center mb-12">
+        <div className="flex flex-col items-center mb-16">
           <img 
             src="/lovable-uploads/0c251999-a44a-4777-a2d2-3f4611be3d6d.png" 
             alt="Erciyas Logo" 
-            className="h-32 mb-8"
+            className="h-40 mb-12"
           />
           <h1 className="text-4xl font-bold text-[#000000] mb-2">
             Değer Zinciri
@@ -61,14 +61,25 @@ export function ValueChain() {
             Kapsamlı Değer Zinciri Analizi
           </p>
         </div>
-        <div className="value-chain-container">
-          {valueChainSteps.map((step, index) => (
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+          {valueChainSteps.slice(0, 4).map((step, index) => (
             <ValueChainCard
               key={index}
               title={step.title}
               description={step.description}
               icon={step.icon}
               index={index}
+            />
+          ))}
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          {valueChainSteps.slice(4, 8).map((step, index) => (
+            <ValueChainCard
+              key={index + 4}
+              title={step.title}
+              description={step.description}
+              icon={step.icon}
+              index={index + 4}
             />
           ))}
         </div>
