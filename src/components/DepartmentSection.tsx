@@ -39,22 +39,12 @@ const departments = [
 
 export function DepartmentSection({ valueChainStep, uploadedData }: DepartmentSectionProps) {
   const getRisksForDepartment = (department: string): RiskData[] => {
-    if (!uploadedData) return [];
-    return uploadedData
-      .filter(row => 
-        row.department === department && 
-        row.valueChainStep === valueChainStep
-      )
-      .map(row => ({
-        department: row.department,
-        risk: row.risk,
-        probability: row.probability,
-        frequency: row.frequency,
-        severity: row.severity,
-        riskScore: row.riskScore,
-        financialImpact: row.financialImpact,
-        date: row.date
-      }));
+    if (!uploadedData || !Array.isArray(uploadedData)) return [];
+    
+    return uploadedData.filter(row => 
+      row.department === department && 
+      row.valueChainStep === valueChainStep
+    );
   };
 
   return (
@@ -71,52 +61,45 @@ export function DepartmentSection({ valueChainStep, uploadedData }: DepartmentSe
                 {department}
               </AccordionTrigger>
               <AccordionContent>
-                <Accordion type="single" collapsible className="w-full">
-                  <AccordionItem value="risks">
-                    <AccordionTrigger className="text-sm">Riskler</AccordionTrigger>
-                    <AccordionContent>
-                      <ul className="space-y-4">
-                        {risks.map((riskData, idx) => (
-                          <li key={idx} className="border-l-2 border-[#ea384c] pl-4">
-                            <p className="text-sm text-gray-800 font-medium mb-2">{riskData.risk}</p>
-                            <div className="grid grid-cols-2 gap-2 text-xs text-gray-600">
-                              {riskData.probability && (
-                                <div>
-                                  <span className="font-medium">Olasılık:</span> {riskData.probability}
-                                </div>
-                              )}
-                              {riskData.frequency && (
-                                <div>
-                                  <span className="font-medium">Sıklık:</span> {riskData.frequency}
-                                </div>
-                              )}
-                              {riskData.severity && (
-                                <div>
-                                  <span className="font-medium">Şiddet:</span> {riskData.severity}
-                                </div>
-                              )}
-                              {riskData.riskScore && (
-                                <div>
-                                  <span className="font-medium">Risk Skoru:</span> {riskData.riskScore}
-                                </div>
-                              )}
-                              {riskData.financialImpact && (
-                                <div>
-                                  <span className="font-medium">Finansal Etki:</span> {riskData.financialImpact}
-                                </div>
-                              )}
-                              {riskData.date && (
-                                <div>
-                                  <span className="font-medium">Tarih:</span> {riskData.date}
-                                </div>
-                              )}
-                            </div>
-                          </li>
-                        ))}
-                      </ul>
-                    </AccordionContent>
-                  </AccordionItem>
-                </Accordion>
+                <ul className="space-y-4">
+                  {risks.map((riskData, idx) => (
+                    <li key={idx} className="border-l-2 border-[#ea384c] pl-4">
+                      <p className="text-sm text-gray-800 font-medium mb-2">{riskData.risk}</p>
+                      <div className="grid grid-cols-2 gap-2 text-xs text-gray-600">
+                        {riskData.probability && (
+                          <div>
+                            <span className="font-medium">Olasılık:</span> {riskData.probability}
+                          </div>
+                        )}
+                        {riskData.frequency && (
+                          <div>
+                            <span className="font-medium">Sıklık:</span> {riskData.frequency}
+                          </div>
+                        )}
+                        {riskData.severity && (
+                          <div>
+                            <span className="font-medium">Şiddet:</span> {riskData.severity}
+                          </div>
+                        )}
+                        {riskData.riskScore && (
+                          <div>
+                            <span className="font-medium">Risk Skoru:</span> {riskData.riskScore}
+                          </div>
+                        )}
+                        {riskData.financialImpact && (
+                          <div>
+                            <span className="font-medium">Finansal Etki:</span> {riskData.financialImpact}
+                          </div>
+                        )}
+                        {riskData.date && (
+                          <div>
+                            <span className="font-medium">Tarih:</span> {riskData.date}
+                          </div>
+                        )}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
               </AccordionContent>
             </AccordionItem>
           );
