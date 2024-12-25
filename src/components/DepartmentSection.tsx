@@ -94,7 +94,7 @@ export function DepartmentSection({ valueChainStep, uploadedData }: DepartmentSe
                               )}
                               {riskData.riskScore && (
                                 <div>
-                                  <span className="font-medium">Risk Skoru:</span> {riskData.riskScore}
+                                  <span className="font-medium">Risk Skoru:</span> {parseFloat(riskData.riskScore).toFixed(2)}
                                 </div>
                               )}
                               {riskData.financialImpact && (
