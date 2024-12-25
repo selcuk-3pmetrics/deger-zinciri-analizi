@@ -2,6 +2,12 @@ import { LucideIcon } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { DepartmentSection } from "./DepartmentSection";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 interface ValueChainCardProps {
   title: string;
@@ -54,24 +60,34 @@ export function ValueChainCard({ title, description, icon: Icon, index, policies
           {description}
         </p>
 
-        <div className="mb-6">
-          <h4 className="text-lg font-semibold mb-3">İlgili Politikalar</h4>
-          <ul className="list-disc pl-6 text-sm text-gray-600">
-            {policies.map((policy, idx) => (
-              <li key={idx} className="mb-2">{policy}</li>
-            ))}
-          </ul>
-        </div>
+        <Accordion type="single" collapsible className="w-full mb-6">
+          <AccordionItem value="policies">
+            <AccordionTrigger className="text-lg font-semibold">
+              İlgili Politikalar
+            </AccordionTrigger>
+            <AccordionContent>
+              <ul className="list-disc pl-6 text-sm text-gray-600">
+                {policies.map((policy, idx) => (
+                  <li key={idx} className="mb-2">{policy}</li>
+                ))}
+              </ul>
+            </AccordionContent>
+          </AccordionItem>
 
-        <div className="mb-6">
-          <h4 className="text-lg font-semibold mb-3">İlgili Paydaşlar</h4>
-          <ul className="list-disc pl-6 text-sm text-gray-600">
-            <li className="mb-2">Çalışanlar</li>
-            <li className="mb-2">Tedarikçiler</li>
-            <li className="mb-2">Müşteriler</li>
-            <li className="mb-2">Yatırımcılar</li>
-          </ul>
-        </div>
+          <AccordionItem value="stakeholders">
+            <AccordionTrigger className="text-lg font-semibold">
+              İlgili Paydaşlar
+            </AccordionTrigger>
+            <AccordionContent>
+              <ul className="list-disc pl-6 text-sm text-gray-600">
+                <li className="mb-2">Çalışanlar</li>
+                <li className="mb-2">Tedarikçiler</li>
+                <li className="mb-2">Müşteriler</li>
+                <li className="mb-2">Yatırımcılar</li>
+              </ul>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
 
         <DepartmentSection valueChainStep={title} uploadedData={uploadedData} />
       </div>
