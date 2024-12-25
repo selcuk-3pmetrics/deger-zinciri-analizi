@@ -13,6 +13,7 @@ interface ValueChainCardProps {
   description: string;
   icon: LucideIcon;
   index: number;
+  policies: string[];
 }
 
 const getStakeholders = (title: string) => {
@@ -71,13 +72,13 @@ const getMaterialityTopics = (title: string) => {
   return materialityMap[title] || [];
 };
 
-export function ValueChainCard({ title, description, icon: Icon, index }: ValueChainCardProps) {
+export function ValueChainCard({ title, description, icon: Icon, index, policies }: ValueChainCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
     <div 
       className={cn(
-        "relative flex flex-col items-center justify-start p-6 rounded-xl backdrop-blur-sm border border-gray-200/50 shadow-lg transition-all duration-300 ease-in-out cursor-pointer",
+        "relative flex flex-col items-center justify-start p-8 rounded-xl backdrop-blur-sm border border-gray-200/50 shadow-lg transition-all duration-300 ease-in-out cursor-pointer min-h-[420px]",
         isExpanded ? "bg-[#ea384c]/10 border-[#ea384c]/30" : "bg-white/80"
       )}
       onClick={() => setIsExpanded(!isExpanded)}
@@ -85,59 +86,72 @@ export function ValueChainCard({ title, description, icon: Icon, index }: ValueC
       tabIndex={0}
     >
       <div className="chip bg-[#ea384c] text-white">{`${index + 1}`}</div>
-      <Icon className="w-12 h-12 mb-4 text-[#ea384c]" />
-      <h3 className="text-lg font-semibold text-[#000000] mb-2 text-center">{title}</h3>
+      <div className="p-2 rounded-full border border-[#ea384c]/30 mb-4">
+        <Icon className="w-14 h-14 text-[#ea384c]" />
+      </div>
+      <h3 className="text-xl font-semibold text-[#000000] mb-4 text-center">{title}</h3>
       <div
         className={cn(
           "overflow-hidden transition-all duration-300",
           isExpanded ? "max-h-[800px] opacity-100" : "max-h-0 opacity-0"
         )}
       >
-        <p className="text-sm text-gray-600 text-center mt-4 leading-relaxed animate-fade-in">
+        <p className="text-sm text-gray-600 text-center mb-6 leading-relaxed animate-fade-in">
           {description}
         </p>
-        
-        <div className="mt-4">
+
+        <div className="mt-4 w-full">
           <Accordion type="single" collapsible className="w-full">
-            <AccordionItem value="stakeholders">
+            <AccordionItem value="policies" className="border-b-0">
+              <AccordionTrigger className="text-sm font-medium">İlgili Politikalar</AccordionTrigger>
+              <AccordionContent>
+                <ul className="list-disc pl-4 text-sm text-gray-600">
+                  {policies.map((policy, idx) => (
+                    <li key={idx} className="mb-2">{policy}</li>
+                  ))}
+                </ul>
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="stakeholders" className="border-b-0">
               <AccordionTrigger className="text-sm font-medium">İlgili Paydaşlar</AccordionTrigger>
               <AccordionContent>
                 <ul className="list-disc pl-4 text-sm text-gray-600">
                   {getStakeholders(title).map((stakeholder, idx) => (
-                    <li key={idx}>{stakeholder}</li>
+                    <li key={idx} className="mb-2">{stakeholder}</li>
                   ))}
                 </ul>
               </AccordionContent>
             </AccordionItem>
 
-            <AccordionItem value="risks">
+            <AccordionItem value="risks" className="border-b-0">
               <AccordionTrigger className="text-sm font-medium">Riskler</AccordionTrigger>
               <AccordionContent>
                 <ul className="list-disc pl-4 text-sm text-gray-600">
                   {getRisks(title).map((risk, idx) => (
-                    <li key={idx}>{risk}</li>
+                    <li key={idx} className="mb-2">{risk}</li>
                   ))}
                 </ul>
               </AccordionContent>
             </AccordionItem>
 
-            <AccordionItem value="opportunities">
+            <AccordionItem value="opportunities" className="border-b-0">
               <AccordionTrigger className="text-sm font-medium">Fırsatlar</AccordionTrigger>
               <AccordionContent>
                 <ul className="list-disc pl-4 text-sm text-gray-600">
                   {getOpportunities(title).map((opportunity, idx) => (
-                    <li key={idx}>{opportunity}</li>
+                    <li key={idx} className="mb-2">{opportunity}</li>
                   ))}
                 </ul>
               </AccordionContent>
             </AccordionItem>
 
-            <AccordionItem value="materiality">
+            <AccordionItem value="materiality" className="border-b-0">
               <AccordionTrigger className="text-sm font-medium">Önemlilik Konuları</AccordionTrigger>
               <AccordionContent>
                 <ul className="list-disc pl-4 text-sm text-gray-600">
                   {getMaterialityTopics(title).map((topic, idx) => (
-                    <li key={idx}>{topic}</li>
+                    <li key={idx} className="mb-2">{topic}</li>
                   ))}
                 </ul>
               </AccordionContent>
