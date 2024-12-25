@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Accordion,
   AccordionContent,
@@ -9,6 +9,17 @@ import {
 interface DepartmentSectionProps {
   valueChainStep: string;
   uploadedData: any[];
+}
+
+interface RiskData {
+  department: string;
+  risk: string;
+  probability?: string;
+  frequency?: string;
+  severity?: string;
+  riskScore?: string;
+  financialImpact?: string;
+  date?: string;
 }
 
 const departments = [
@@ -27,54 +38,89 @@ const departments = [
 ];
 
 export function DepartmentSection({ valueChainStep, uploadedData }: DepartmentSectionProps) {
-  const getRisksForDepartment = (department: string) => {
+  const getRisksForDepartment = (department: string): RiskData[] => {
     if (!uploadedData) return [];
     return uploadedData
-      .filter(row => row.department === department && row.valueChain === valueChainStep)
-      .map(row => row.risk);
-  };
-
-  const getOpportunitiesForDepartment = (department: string) => {
-    // This would be similar to risks but with opportunities column
-    // For now returning placeholder data
-    return ["Fırsat 1", "Fırsat 2"];
+      .filter(row => 
+        row.department === department && 
+        row.valueChainStep === valueChainStep
+      )
+      .map(row => ({
+        department: row.department,
+        risk: row.risk,
+        probability: row.probability,
+        frequency: row.frequency,
+        severity: row.severity,
+        riskScore: row.riskScore,
+        financialImpact: row.financialImpact,
+        date: row.date
+      }));
   };
 
   return (
     <div className="w-full mt-4">
       <h4 className="text-lg font-semibold mb-3">Departmanlar</h4>
       <Accordion type="single" collapsible className="w-full">
-        {departments.map((department, index) => (
-          <AccordionItem key={index} value={`department-${index}`}>
-            <AccordionTrigger className="text-sm font-medium">
-              {department}
-            </AccordionTrigger>
-            <AccordionContent>
-              <Accordion type="single" collapsible className="w-full">
-                <AccordionItem value="risks">
-                  <AccordionTrigger className="text-sm">Riskler</AccordionTrigger>
-                  <AccordionContent>
-                    <ul className="list-disc pl-4 text-sm text-gray-600">
-                      {getRisksForDepartment(department).map((risk, idx) => (
-                        <li key={idx} className="mb-2">{risk}</li>
-                      ))}
-                    </ul>
-                  </AccordionContent>
-                </AccordionItem>
-                <AccordionItem value="opportunities">
-                  <AccordionTrigger className="text-sm">Fırsatlar</AccordionTrigger>
-                  <AccordionContent>
-                    <ul className="list-disc pl-4 text-sm text-gray-600">
-                      {getOpportunitiesForDepartment(department).map((opportunity, idx) => (
-                        <li key={idx} className="mb-2">{opportunity}</li>
-                      ))}
-                    </ul>
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
-            </AccordionContent>
-          </AccordionItem>
-        ))}
+        {departments.map((department, index) => {
+          const risks = getRisksForDepartment(department);
+          if (risks.length === 0) return null;
+
+          return (
+            <AccordionItem key={index} value={`department-${index}`}>
+              <AccordionTrigger className="text-sm font-medium">
+                {department}
+              </AccordionTrigger>
+              <AccordionContent>
+                <Accordion type="single" collapsible className="w-full">
+                  <AccordionItem value="risks">
+                    <AccordionTrigger className="text-sm">Riskler</AccordionTrigger>
+                    <AccordionContent>
+                      <ul className="space-y-4">
+                        {risks.map((riskData, idx) => (
+                          <li key={idx} className="border-l-2 border-[#ea384c] pl-4">
+                            <p className="text-sm text-gray-800 font-medium mb-2">{riskData.risk}</p>
+                            <div className="grid grid-cols-2 gap-2 text-xs text-gray-600">
+                              {riskData.probability && (
+                                <div>
+                                  <span className="font-medium">Olasılık:</span> {riskData.probability}
+                                </div>
+                              )}
+                              {riskData.frequency && (
+                                <div>
+                                  <span className="font-medium">Sıklık:</span> {riskData.frequency}
+                                </div>
+                              )}
+                              {riskData.severity && (
+                                <div>
+                                  <span className="font-medium">Şiddet:</span> {riskData.severity}
+                                </div>
+                              )}
+                              {riskData.riskScore && (
+                                <div>
+                                  <span className="font-medium">Risk Skoru:</span> {riskData.riskScore}
+                                </div>
+                              )}
+                              {riskData.financialImpact && (
+                                <div>
+                                  <span className="font-medium">Finansal Etki:</span> {riskData.financialImpact}
+                                </div>
+                              )}
+                              {riskData.date && (
+                                <div>
+                                  <span className="font-medium">Tarih:</span> {riskData.date}
+                                </div>
+                              )}
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              </AccordionContent>
+            </AccordionItem>
+          );
+        })}
       </Accordion>
     </div>
   );
