@@ -55,7 +55,7 @@ export function DepartmentSection({ valueChainStep, uploadedData }: DepartmentSe
 
   return (
     <div className="w-full mt-4">
-      <h4 className="text-lg font-semibold mb-3">Departmanlar</h4>
+      <h4 className="text-lg font-semibold mb-3">Riskler</h4>
       <Accordion type="single" collapsible className="w-full">
         {departments.map((department, index) => {
           const risks = getRisksForDepartment(department);
