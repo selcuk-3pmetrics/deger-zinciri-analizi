@@ -12,7 +12,7 @@ interface ValueChainCardProps {
   uploadedData: any[];
 }
 
-export function ValueChainCard({ title, description, icon: Icon, index, uploadedData }: ValueChainCardProps) {
+export function ValueChainCard({ title, description, icon: Icon, index, policies, uploadedData }: ValueChainCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const handleTitleClick = () => {
@@ -53,6 +53,25 @@ export function ValueChainCard({ title, description, icon: Icon, index, uploaded
         <p className="text-sm text-gray-600 text-center mb-6 leading-relaxed animate-fade-in">
           {description}
         </p>
+
+        <div className="mb-6">
+          <h4 className="text-lg font-semibold mb-3">İlgili Politikalar</h4>
+          <ul className="list-disc pl-6 text-sm text-gray-600">
+            {policies.map((policy, idx) => (
+              <li key={idx} className="mb-2">{policy}</li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="mb-6">
+          <h4 className="text-lg font-semibold mb-3">İlgili Paydaşlar</h4>
+          <ul className="list-disc pl-6 text-sm text-gray-600">
+            <li className="mb-2">Çalışanlar</li>
+            <li className="mb-2">Tedarikçiler</li>
+            <li className="mb-2">Müşteriler</li>
+            <li className="mb-2">Yatırımcılar</li>
+          </ul>
+        </div>
 
         <DepartmentSection valueChainStep={title} uploadedData={uploadedData} />
       </div>
