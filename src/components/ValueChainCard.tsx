@@ -28,12 +28,22 @@ export function ValueChainCard({ title, description, icon: Icon, index }: ValueC
       <div
         className={cn(
           "overflow-hidden transition-all duration-300",
-          isExpanded ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+          isExpanded ? "max-h-[800px] opacity-100" : "max-h-0 opacity-0"
         )}
       >
         <p className="value-chain-description animate-fade-in">
           {description}
         </p>
+        
+        {title === "Üretim Süreci" && (
+          <div className="mt-4 flex justify-center">
+            <img 
+              src="/lovable-uploads/ce185a19-15dc-4d18-9d4b-3feea29cbcc7.png" 
+              alt="Üretim Süreci Şeması" 
+              className="w-full max-w-[800px] rounded-lg shadow-lg"
+            />
+          </div>
+        )}
       </div>
     </div>
   );
