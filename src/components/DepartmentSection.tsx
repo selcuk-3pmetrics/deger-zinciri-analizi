@@ -25,6 +25,8 @@ interface DataItem {
   severity?: string;
   riskScore?: string;
   financialImpact?: string;
+  category?: string;
+  description?: string;
 }
 
 const departments = [
@@ -95,11 +97,10 @@ export function DepartmentSection({ valueChainStep, uploadedData }: DepartmentSe
     </li>
   );
 
-  const renderSimpleItem = (item: DataItem, idx: number, type: string) => (
+  const renderCategoryItem = (item: DataItem, idx: number) => (
     <li key={idx} className="border-l-2 border-[#ea384c] pl-4">
-      <p className="text-sm text-gray-800 font-medium mb-2">
-        {type === 'opportunities' ? item.opportunity : item.materiality}
-      </p>
+      <p className="text-sm text-gray-800 font-medium mb-2">{item.category}</p>
+      <p className="text-sm text-gray-600">{item.description}</p>
     </li>
   );
 
@@ -150,7 +151,7 @@ export function DepartmentSection({ valueChainStep, uploadedData }: DepartmentSe
                     </AccordionTrigger>
                     <AccordionContent>
                       <ul className="space-y-4">
-                        {opportunities.map((item, idx) => renderSimpleItem(item, idx, 'opportunities'))}
+                        {opportunities.map((item, idx) => renderCategoryItem(item, idx))}
                       </ul>
                     </AccordionContent>
                   </AccordionItem>
@@ -177,7 +178,7 @@ export function DepartmentSection({ valueChainStep, uploadedData }: DepartmentSe
                     </AccordionTrigger>
                     <AccordionContent>
                       <ul className="space-y-4">
-                        {materialityItems.map((item, idx) => renderSimpleItem(item, idx, 'materiality'))}
+                        {materialityItems.map((item, idx) => renderCategoryItem(item, idx))}
                       </ul>
                     </AccordionContent>
                   </AccordionItem>
