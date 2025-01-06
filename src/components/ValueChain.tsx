@@ -3,6 +3,12 @@ import { ValueChainCard } from "./ValueChainCard";
 import { ExcelUploader } from "./ExcelUploader";
 import { useState } from "react";
 
+interface UploadedData {
+  risks: any[];
+  materiality: any[];
+  opportunities: any[];
+}
+
 const valueChainSteps = [
   {
     title: "Hammadde Temini",
@@ -55,7 +61,11 @@ const valueChainSteps = [
 ];
 
 export function ValueChain() {
-  const [uploadedData, setUploadedData] = useState<any[]>([]);
+  const [uploadedData, setUploadedData] = useState<UploadedData>({
+    risks: [],
+    materiality: [],
+    opportunities: []
+  });
 
   return (
     <div className="min-h-screen bg-white py-12 px-4">
