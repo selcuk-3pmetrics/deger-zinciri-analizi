@@ -19,14 +19,15 @@ export function ExcelUploader({ onDataUploaded }: ExcelUploaderProps) {
       reader.onload = (event) => {
         try {
           const workbook = XLSX.read(event.target?.result, { type: 'binary' });
-          const sheetName = workbook.SheetNames[0];
-          const worksheet = workbook.Sheets[sheetName];
+          // Always use the first sheet
+          const firstSheetName = workbook.SheetNames[0];
+          const worksheet = workbook.Sheets[firstSheetName];
           const data = XLSX.utils.sheet_to_json(worksheet);
           
           onDataUploaded(data);
           toast({
             title: "Excel başarıyla yüklendi",
-            description: "Veriler başarıyla içe aktarıldı.",
+            description: `İlk sayfa (${firstSheetName}) verileri başarıyla içe aktarıldı.`,
           });
         } catch (error) {
           toast({
