@@ -5,7 +5,11 @@ import { Upload } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 
 interface ExcelUploaderProps {
-  onDataUploaded: (data: any[]) => void;
+  onDataUploaded: (data: {
+    risks: any[];
+    materiality: any[];
+    opportunities: any[];
+  }) => void;
 }
 
 export function ExcelUploader({ onDataUploaded }: ExcelUploaderProps) {
@@ -19,15 +23,21 @@ export function ExcelUploader({ onDataUploaded }: ExcelUploaderProps) {
       reader.onload = (event) => {
         try {
           const workbook = XLSX.read(event.target?.result, { type: 'binary' });
-          // Always use the first sheet
-          const firstSheetName = workbook.SheetNames[0];
-          const worksheet = workbook.Sheets[firstSheetName];
-          const data = XLSX.utils.sheet_to_json(worksheet);
+          const sheets = workbook.SheetNames;
           
-          onDataUploaded(data);
+          const risksData = XLSX.utils.sheet_to_json(workbook.Sheets[sheets[0]] || {});
+          const materialityData = XLSX.utils.sheet_to_json(workbook.Sheets[sheets[1]] || {});
+          const opportunitiesData = XLSX.utils.sheet_to_json(workbook.Sheets[sheets[2]] || {});
+          
+          onDataUploaded({
+            risks: risksData,
+            materiality: materialityData,
+            opportunities: opportunitiesData
+          });
+
           toast({
             title: "Excel başarıyla yüklendi",
-            description: `İlk sayfa (${firstSheetName}) verileri başarıyla içe aktarıldı.`,
+            description: `${sheets.length} sayfa verisi başarıyla içe aktarıldı.`,
           });
         } catch (error) {
           toast({

@@ -15,7 +15,11 @@ interface ValueChainCardProps {
   icon: LucideIcon;
   index: number;
   policies: string[];
-  uploadedData: any[];
+  uploadedData: {
+    risks: any[];
+    materiality: any[];
+    opportunities: any[];
+  };
 }
 
 export function ValueChainCard({ title, description, icon: Icon, index, policies, uploadedData }: ValueChainCardProps) {

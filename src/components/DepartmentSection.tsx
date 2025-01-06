@@ -5,16 +5,21 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { ChevronDown } from "lucide-react";
 
 interface DepartmentSectionProps {
   valueChainStep: string;
-  uploadedData: any[];
+  uploadedData: {
+    risks: any[];
+    materiality: any[];
+    opportunities: any[];
+  };
 }
 
-interface RiskData {
+interface DataItem {
   department: string;
-  risk: string;
+  risk?: string;
+  opportunity?: string;
+  materiality?: string;
   probability?: string;
   frequency?: string;
   severity?: string;
@@ -38,24 +43,69 @@ const departments = [
 ];
 
 export function DepartmentSection({ valueChainStep, uploadedData }: DepartmentSectionProps) {
-  const getRisksForDepartment = (department: string): RiskData[] => {
-    if (!uploadedData || !Array.isArray(uploadedData)) return [];
+  const getItemsForDepartment = (department: string, type: 'risks' | 'materiality' | 'opportunities'): DataItem[] => {
+    if (!uploadedData[type] || !Array.isArray(uploadedData[type])) return [];
     
-    const risks = uploadedData.filter(row => 
+    const items = uploadedData[type].filter(row => 
       row.department === department && 
       row.valueChainStep === valueChainStep
     );
 
-    return risks.sort((a, b) => {
-      const scoreA = parseFloat(a.riskScore) || 0;
-      const scoreB = parseFloat(b.riskScore) || 0;
-      return scoreB - scoreA;
-    });
+    if (type === 'risks') {
+      return items.sort((a, b) => {
+        const scoreA = parseFloat(a.riskScore) || 0;
+        const scoreB = parseFloat(b.riskScore) || 0;
+        return scoreB - scoreA;
+      });
+    }
+
+    return items;
   };
+
+  const renderRiskItem = (item: DataItem, idx: number) => (
+    <li key={idx} className="border-l-2 border-[#ea384c] pl-4">
+      <p className="text-sm text-gray-800 font-medium mb-2">{item.risk}</p>
+      <div className="grid grid-cols-2 gap-2 text-xs text-gray-600">
+        {item.probability && (
+          <div>
+            <span className="font-medium">Olasılık:</span> {item.probability}
+          </div>
+        )}
+        {item.frequency && (
+          <div>
+            <span className="font-medium">Sıklık:</span> {item.frequency}
+          </div>
+        )}
+        {item.severity && (
+          <div>
+            <span className="font-medium">Şiddet:</span> {item.severity}
+          </div>
+        )}
+        {item.riskScore && (
+          <div>
+            <span className="font-medium">Risk Skoru:</span> {parseFloat(item.riskScore).toFixed(2)}
+          </div>
+        )}
+        {item.financialImpact && (
+          <div>
+            <span className="font-medium">Finansal Etki:</span> {item.financialImpact}
+          </div>
+        )}
+      </div>
+    </li>
+  );
+
+  const renderSimpleItem = (item: DataItem, idx: number, type: string) => (
+    <li key={idx} className="border-l-2 border-[#ea384c] pl-4">
+      <p className="text-sm text-gray-800 font-medium mb-2">
+        {type === 'opportunities' ? item.opportunity : item.materiality}
+      </p>
+    </li>
+  );
 
   return (
     <div className="w-full mt-4">
-      <Accordion type="single" collapsible className="w-full">
+      <Accordion type="single" collapsible className="w-full space-y-4">
         <AccordionItem value="risks">
           <AccordionTrigger className="text-lg font-semibold">
             Riskler
@@ -63,48 +113,71 @@ export function DepartmentSection({ valueChainStep, uploadedData }: DepartmentSe
           <AccordionContent>
             <Accordion type="single" collapsible className="w-full">
               {departments.map((department, index) => {
-                const risks = getRisksForDepartment(department);
+                const risks = getItemsForDepartment(department, 'risks');
                 if (risks.length === 0) return null;
 
                 return (
-                  <AccordionItem key={index} value={`department-${index}`}>
+                  <AccordionItem key={index} value={`department-risks-${index}`}>
                     <AccordionTrigger className="text-sm font-medium">
                       {department}
                     </AccordionTrigger>
                     <AccordionContent>
                       <ul className="space-y-4">
-                        {risks.map((riskData, idx) => (
-                          <li key={idx} className="border-l-2 border-[#ea384c] pl-4">
-                            <p className="text-sm text-gray-800 font-medium mb-2">{riskData.risk}</p>
-                            <div className="grid grid-cols-2 gap-2 text-xs text-gray-600">
-                              {riskData.probability && (
-                                <div>
-                                  <span className="font-medium">Olasılık:</span> {riskData.probability}
-                                </div>
-                              )}
-                              {riskData.frequency && (
-                                <div>
-                                  <span className="font-medium">Sıklık:</span> {riskData.frequency}
-                                </div>
-                              )}
-                              {riskData.severity && (
-                                <div>
-                                  <span className="font-medium">Şiddet:</span> {riskData.severity}
-                                </div>
-                              )}
-                              {riskData.riskScore && (
-                                <div>
-                                  <span className="font-medium">Risk Skoru:</span> {parseFloat(riskData.riskScore).toFixed(2)}
-                                </div>
-                              )}
-                              {riskData.financialImpact && (
-                                <div>
-                                  <span className="font-medium">Finansal Etki:</span> {riskData.financialImpact}
-                                </div>
-                              )}
-                            </div>
-                          </li>
-                        ))}
+                        {risks.map((item, idx) => renderRiskItem(item, idx))}
+                      </ul>
+                    </AccordionContent>
+                  </AccordionItem>
+                );
+              })}
+            </Accordion>
+          </AccordionContent>
+        </AccordionItem>
+
+        <AccordionItem value="opportunities">
+          <AccordionTrigger className="text-lg font-semibold">
+            Fırsatlar
+          </AccordionTrigger>
+          <AccordionContent>
+            <Accordion type="single" collapsible className="w-full">
+              {departments.map((department, index) => {
+                const opportunities = getItemsForDepartment(department, 'opportunities');
+                if (opportunities.length === 0) return null;
+
+                return (
+                  <AccordionItem key={index} value={`department-opportunities-${index}`}>
+                    <AccordionTrigger className="text-sm font-medium">
+                      {department}
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <ul className="space-y-4">
+                        {opportunities.map((item, idx) => renderSimpleItem(item, idx, 'opportunities'))}
+                      </ul>
+                    </AccordionContent>
+                  </AccordionItem>
+                );
+              })}
+            </Accordion>
+          </AccordionContent>
+        </AccordionItem>
+
+        <AccordionItem value="materiality">
+          <AccordionTrigger className="text-lg font-semibold">
+            Önemlilik Maddeleri
+          </AccordionTrigger>
+          <AccordionContent>
+            <Accordion type="single" collapsible className="w-full">
+              {departments.map((department, index) => {
+                const materialityItems = getItemsForDepartment(department, 'materiality');
+                if (materialityItems.length === 0) return null;
+
+                return (
+                  <AccordionItem key={index} value={`department-materiality-${index}`}>
+                    <AccordionTrigger className="text-sm font-medium">
+                      {department}
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <ul className="space-y-4">
+                        {materialityItems.map((item, idx) => renderSimpleItem(item, idx, 'materiality'))}
                       </ul>
                     </AccordionContent>
                   </AccordionItem>
