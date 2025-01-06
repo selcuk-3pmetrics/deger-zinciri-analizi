@@ -99,8 +99,10 @@ export function DepartmentSection({ valueChainStep, uploadedData }: DepartmentSe
 
   const renderCategoryItem = (item: DataItem, idx: number) => (
     <li key={idx} className="border-l-2 border-[#ea384c] pl-4">
-      <p className="text-sm text-gray-800 font-medium mb-2">{item.category}</p>
-      <p className="text-sm text-gray-600">{item.description}</p>
+      <div className="mb-2">
+        <p className="text-sm text-gray-800 font-medium">{item.category}</p>
+        <p className="text-sm text-gray-600 mt-1">{Object.values(item)[2]}</p>
+      </div>
     </li>
   );
 
